@@ -9,6 +9,7 @@ function Transform() {
   const [outputText, setOutputText] = useState('');  // 출력 텍스트 상태 추가
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const [isLoading, setIsLoading] = useState(false);  // 로딩 상태 추가
+  const [isPlaying, setIsPlaying] = useState(false);
 
   // 변환하기 함수 추가
   const handleTransform = async () => {
@@ -43,6 +44,39 @@ function Transform() {
       }, 2000);
     } catch (err) {
       console.error('복사에 실패했습니다:', err);
+    }
+  };
+
+  // handlePlaySound 함수 수정
+  const handlePlaySound = async () => {
+    if (!outputText || isPlaying) return;
+    
+    setIsPlaying(true);
+    try {
+      const selectedStyle = document.querySelector(`.${styles.styleSelect}`).value;
+      const response = await axios.post('http://localhost:8000/api/tts', {
+        text: outputText,
+        voice: {
+          style: selectedStyle  // 단순히 스타일 정보만 전달
+        }
+      }, {
+        responseType: 'arraybuffer'
+      });
+
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(response.data);
+      const source = audioContext.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(audioContext.destination);
+      
+      source.onended = () => {
+        setIsPlaying(false);
+      };
+      
+      source.start(0);
+    } catch (error) {
+      console.error('TTS Error:', error);
+      setIsPlaying(false);
     }
   };
 
@@ -88,9 +122,15 @@ function Transform() {
             readOnly={true}
           ></textarea>
           <div className={styles.buttonGroup}>
-            <button className={styles.soundButton}>
+            <button 
+              className={styles.soundButton}
+              onClick={handlePlaySound}
+              disabled={!outputText || isPlaying}
+            >
               <FontAwesomeIcon icon={faVolumeHigh} />
-              <span className={styles.srOnly}>소리 재생</span>
+              <span className={styles.srOnly}>
+                {isPlaying ? '재생 중...' : '소리 재생'}
+              </span>
             </button>
             <div className={styles.copyButtonWrapper}>
               <button 
