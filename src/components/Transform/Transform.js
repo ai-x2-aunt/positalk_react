@@ -5,7 +5,9 @@ import { faCopy, faVolumeHigh, faXmark } from '@fortawesome/free-solid-svg-icons
 
 function Transform() {
   const [inputText, setInputText] = useState('');
+  const [outputText, setOutputText] = useState('');
   const [showCopyMessage, setShowCopyMessage] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // inputarea reset
   const handleReset = () => {
@@ -22,6 +24,39 @@ function Transform() {
       }, 2000);
     } catch (err) {
       console.error('복사에 실패했습니다:', err);
+    }
+  };
+
+  const handleTransform = async () => {
+    if (!inputText.trim()) {
+      alert('변환할 텍스트를 입력해주세요.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await fetch('http://127.0.0.1:8000/generate_text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: inputText,
+          style: document.querySelector(`.${styles.styleSelect}`).value
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('변환 요청에 실패했습니다.');
+      }
+
+      const data = await response.json();
+      setOutputText(data.generated_text);
+    } catch (error) {
+      console.error('에러:', error);
+      alert('변환 중 오류가 발생했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,7 +77,13 @@ function Transform() {
                 <FontAwesomeIcon icon={faXmark} />
               </button>)}
           </div>
-          <button className={styles.transformButton}>변환하기</button>
+          <button 
+            className={styles.transformButton} 
+            onClick={handleTransform}
+            disabled={isLoading}
+          >
+            {isLoading ? '변환중...' : '변환하기'}
+          </button>
         </div>
         
         <div className={styles.rightSection}>
@@ -54,7 +95,11 @@ function Transform() {
               <option value="friendly">친근하게</option>
             </select>
           </div>
-          <textarea className={styles.outputArea} readOnly={true}></textarea>
+          <textarea 
+            className={styles.outputArea} 
+            readOnly={true}
+            value={outputText}
+          ></textarea>
           <div className={styles.buttonGroup}>
             <button className={styles.soundButton}>
               <FontAwesomeIcon icon={faVolumeHigh} />
