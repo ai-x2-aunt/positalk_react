@@ -293,10 +293,12 @@ function Transform({ histories, setHistories }) {
                 <select
                   className={`${styles.styleSelect} 
                     ${selectedLocalModel ? styles.disabledSelect : ''} 
-                    ${selectedCloudModel ? styles.activeSelect : ''}`}
+                    ${selectedCloudModel ? styles.activeSelect : ''}
+                    ${!selectedCloudModel ? styles.placeholderStyle : ''}`}
                   value={selectedCloudModel}
                   onChange={handleCloudModelChange}
                   disabled={!!selectedLocalModel}
+                  required
                 >
                   <option value="">클라우드 AI 모델</option>
                   {modelOptions.map(option => (
@@ -310,10 +312,12 @@ function Transform({ histories, setHistories }) {
                 <select
                   className={`${styles.styleSelect} 
                     ${selectedCloudModel ? styles.disabledSelect : ''} 
-                    ${selectedLocalModel ? styles.activeSelect : ''}`}
+                    ${selectedLocalModel ? styles.activeSelect : ''}
+                    ${!selectedLocalModel ? styles.placeholderStyle : ''}`}
                   value={selectedLocalModel}
                   onChange={handleLocalModelChange}
                   disabled={!!selectedCloudModel}
+                  required
                 >
                   <option value="">로컬 AI 모델</option>
                   {localAIOptions.map(option => (
@@ -331,6 +335,7 @@ function Transform({ histories, setHistories }) {
                 value={selectedStyle}
                 onChange={(e) => setSelectedStyle(e.target.value)}
                 disabled={!modelType}
+                required
               >
                 <option value="" disabled>문체 선택</option>
                 {availableStyles.map(option => (
