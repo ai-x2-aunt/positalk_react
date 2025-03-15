@@ -228,26 +228,25 @@
 }
 
 .formalStyle {
-  background-color: #6B7280;  /* 회색 */
+  background-color: #6B7280;
   color: #fff;
 }
 
 .casualStyle {
-  background-color: #2D336B;  /* 파란색 */
+  background-color: #2D336B;
   color: #fff;
 }
 
 .politeStyle {
-  background-color: #4F959D;  /* 갈색 */
+  background-color: #4F959D;
   color: #fff;
 }
 
 .cuteStyle {
-  background-color: #EC7FA9;  /* 분홍색 */
+  background-color: #EC7FA9;
   color: #fff;
 }
 
-/* 스크롤바 스타일링 */
 .historyList::-webkit-scrollbar {
   width: 8px;
 }
@@ -265,6 +264,76 @@
 
 .historyList::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@media (max-width: 430px) {
+  .modalHeader {
+    padding: 12px 16px;
+  }
+  
+  .modalHeader h2 {
+    font-size: 16px;
+  }
+  
+  .historyList {
+    padding: 12px 16px 30px 16px;
+  }
+  
+  .historyItem {
+    padding: 14px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  
+  .historyHeader {
+    gap: 6px;
+    margin-bottom: 12px;
+    font-size: 12px;
+  }
+  
+  .timestamp {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .model, .style {
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 3px;
+  }
+  
+  .inputText, .outputText {
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  
+  .inputText label, .outputText label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .actions {
+    gap: 6px;
+    margin-top: 8px;
+  }
+  
+  .actionButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+  }
+  
+  .closeButton {
+    font-size: 20px;
+    padding: 4px;
+  }
+  
+  .noHistoryMessage {
+    height: 150px;
+    font-size: 15px;
+    margin: 15px 0;
+  }
 }
 
 /* 작은 모바일 화면 */
@@ -308,3 +377,4 @@
   border-radius: 8px;
   margin: 20px 0;
 }
+
