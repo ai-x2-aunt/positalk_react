@@ -22,7 +22,7 @@
   padding: 40px;
   display: flex;
   gap: 18px;
-  align-items: stretch; /* 두 섹션 높이 맞춤 */
+  align-items: stretch;
 }
 
 .leftSection, 
@@ -41,9 +41,6 @@
   color: #191A23;
 }
 
-/* --------------------
-
--------------------- */
 .modelButtons {
   display: flex;
   gap: 8px;
@@ -75,7 +72,6 @@
 /* 공통 select wrapper */
 .selectWrapper {
   display: flex;
-  /* justify-content: space-between; */
   flex-direction: row;
   align-items: center;
   gap: 5px;
@@ -83,13 +79,13 @@
   margin-bottom: 7px;
 }
 
+/* 모든 select 요소에 대한 공통 스타일 */
 .styleSelect {
-  /* 기본 스타일 */
   padding: 8px 12px;
   border: 1px solid #191A23;
   border-radius: 8px;
   background: transparent;
-  color: #191A23;
+  color: #9e9e9e;
   font-size: 14px;
   cursor: pointer;
   min-width: 150px;
@@ -103,20 +99,26 @@
   background-size: 12px;
 }
 
-/* 포커스 효과 */
-.styleSelect:focus {
+.styleSelect:not(:invalid),
+.modelSelectWrapper select:not(:invalid) {
+ color: #191A23; 
+}
+
+.styleSelect:focus,
+.modelSelectWrapper select:focus {
   outline: none;
   border-color: #B9FF66;
 }
 
-/* 옵션 스타일 */
-.styleSelect option {
+.styleSelect option,
+.modelSelectWrapper select option {
   padding: 8px;
   background-color: #fff;
   color: #191A23;
 }
-.styleSelect option:first-child {
-  color: #666;
+.styleSelect option:first-child,
+.modelSelectWrapper select option:first-child {
+  color: #9e9e9e;
 }
 
 /* 입력/출력 영역 */
@@ -140,14 +142,12 @@
 
 .resetButton:hover {
   color: #191A23;
-  /* color: #B9FF66; */
 }
 
 .inputArea {
   font-family: 'Pretendard';
   width: 100%;
   height: 400px;
-  /* padding: 20px; */
   padding: 20px 40px 20px 20px;
   border: 1px solid #E5E5E5;
   border-radius: 15px;
@@ -174,14 +174,12 @@
   user-select: none;
 }
 
-/* 포커스 스타일 */
 .inputArea:focus,
 .outputArea:focus {
   border: 1px solid #B9FF66;
   outline: none;
 }
 
-/* 변환 버튼 */
 .transformButton {
   padding: 15px 35px;
   background: #191A23;
@@ -194,7 +192,6 @@
   align-self: flex-end;
 }
 
-/* 사운드/복사 버튼 그룹 */
 .buttonGroup {
   display: flex;
   gap: 10px;
@@ -230,21 +227,6 @@
   }
 }
 
-/* .soundButton, 
-.copyButton {
-  width: 50px;
-  height: 50px;
-  border: none;
-  border-radius: 12px;
-  background: #191A23;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 1rem;
-} */
-
 /* 공통 아이콘 버튼 (기록/사운드/복사) */
 .iconButton {
   width: 50px;
@@ -269,9 +251,8 @@
 }
 
 .iconButton:hover:not(:disabled) {
-  background-color: #333;  /* 호버 시 색만 조금 어둡게 바꿀 수도 있음 */
+  background-color: #333;
 }
-
 
 .srOnly {
   position: absolute;
@@ -328,14 +309,6 @@
   flex-direction: row;
   align-items: center;
   margin: 15px 0;
-}
-
-.modelSelectWrapper select {
-  /* padding: 8px 12px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  min-width: 150px; */
 }
 
 .modelSelectWrapper select,
@@ -434,25 +407,6 @@
   }
 }
 
-/* 모델 선택 select */
-.modelSelectWrapper .styleSelect, .styleSelect {
-  display: flex;
-  width: 100%;
-  margin-bottom: 5px;
-  border: 1px solid #191A23;
-  border-radius: 8px;
-  background: transparent url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxMCAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAzTDUgN0w5IDMiIHN0cm9rZT0iIzE5MUEyMyIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvc3ZnPg==") no-repeat;
-  background-position: right 12px center;
-  background-size: 12px;
-  color: #191A23;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  appearance: none;
-  -webkit-appearance: none;
-}
-
 .modelSelectWrapper .styleSelect:focus, .styleSelect:focus {
   outline: none;
   border-color: #191A23;
@@ -471,13 +425,11 @@
   cursor: not-allowed;
 }
 
-/* 선택 불가능함을 시각적으로 더 명확히 표시 */
 .disabledSelect:hover {
   background-color: #f0f0f0;
   color: #888;
   border-color: #ccc;
 }
-
 
 /* 선택 옵션 레이블 개선 */
 .styleSelect option:first-child {
@@ -527,6 +479,7 @@
     flex-direction: column;
     align-items: felx-start;
     height: auto;
+    width: 100%;
   }
 
   .styleSelect {
@@ -537,14 +490,18 @@
 
   .modelSelectWrapper {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 10px;
     margin: 0;
+    display: flex;
   }
   
   .modelSelectWrapper select {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 8px;
+    width: calc(50% - 5px) !important;
+    min-width: unset;
+    margin: 0;
   }
   
   .headerSection {
